@@ -2213,10 +2213,15 @@ int signal(
       double local_minimum = IsLocalMinimum(3, i_extremumRank);
       double local_maximum = IsLocalMaximum(3, i_extremumRank);
       
-      if (IsNewBar()) {
-         Print("[Check] LONG   -- Local Maximum @Bid[",Bid,"] > ",NormalizeDouble(local_maximum,Digits));
-         Print("[Check] SHORT  -- Local Minimum @Ask[",Ask,"] > ",NormalizeDouble(local_minimum,Digits));
-         Print("[Check] StdDev -- Thold[",DoubleToString(StandardDeviation),"] - iStdDev[", DoubleToString(stdDev), "/", DoubleToString(stdDev1), " -->",stdDevCoeff,"]" );
+      if (IsNewBar) {
+         if (_ordType == OP_BUY) {
+            Print("[Check] LONG   -- Local Maximum @Bid[",Bid,"] > ",NormalizeDouble(local_maximum,Digits),
+               " - StdDev -- Thold[",DoubleToString(StandardDeviation),"] - iStdDev[", DoubleToString(stdDev), "/", DoubleToString(stdDev1), " -->",stdDevCoeff,"]");
+         }
+         if (_ordType == OP_SELL) {
+            Print("[Check] SHORT  -- Local Minimum @Ask[",Ask,"] > ",NormalizeDouble(local_minimum,Digits),
+               " - StdDev -- Thold[",DoubleToString(StandardDeviation),"] - iStdDev[", DoubleToString(stdDev), "/", DoubleToString(stdDev1), " -->",stdDevCoeff,"]");
+         }
       }
 
       if (_ordCount == 0 && stdDevCoeff > 0 && stdDevCoeff >= StandardDeviation) {
